@@ -162,7 +162,7 @@ class Wallet(object):
             port = int(self.config.get('default_servers')[server_url]['t'])
             try:
                 remote_height = yield self.get_remote_height(server_url, port)
-                log.info("%s:%i remote height: %i, local height: %s", server_url, port, remote_height, local_height)
+                log.debug("%s:%i remote height: %i, local height: %s", server_url, port, remote_height, local_height)
                 if remote_height > local_height + s3_headers_depth:
                     defer.returnValue(True)
             except Exception as err:
