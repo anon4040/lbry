@@ -181,6 +181,23 @@ class Account:
         return sum(utxo.amount for utxo in self.get_unspent_utxos())
 
 
+class VanityAccount(Account):
+
+    @classmethod
+    def from_private_key(cls, coin, private_key_str):  # type: (BaseCoin, str) -> VanityAccount
+        private_key = from_extended_key_string(coin, private_key_str)
+        return cls(
+            coin=coin, seed=None, encrypted=False,
+            private_key=private_key,
+            public_key=private_key.public_key
+        )
+
+def account_from_dict(coin, d):
+    if d['is_vanity']:
+        return VanityAccount.from_dict(coin, d)
+    else:
+        return Account.from_dict(coin, d)
+
 class AccountsView:
 
     def __init__(self, accounts):
